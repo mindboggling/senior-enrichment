@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Media, Col, Form, ControlLabel, FormControl, Button, FormGroup } from 'react-bootstrap';
-import { addCampus, removeCampus } from '../redux/campuses';
+import { addCampus } from '../redux/campuses';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Router } from 'react-router';
+import Campus from './Campus';
 
 
 class Campuses extends Component {
@@ -13,9 +14,9 @@ class Campuses extends Component {
     super(props);
 
     this.state = {
-        name: '',
-        image: '',
-        content: ''
+      name: '',
+      image: '',
+      content: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -38,62 +39,47 @@ class Campuses extends Component {
       <div>
         <form onSubmit={this.handleSubmit} className="form-group">
           <div>
-            <h5 style={{float: 'left', marginRight: 10}}>Name</h5>
+            <h5 style={{ float: 'left', marginRight: 10 }}>Name</h5>
             <input
               name="name"
               type="text"
               className="form-like large-font"
               placeholder="Enter Campus Name"
               onChange={event => this.setState({ name: event.target.value })}
-              style={{height: 30, width: 500}}
+              style={{ height: 30, width: 500 }}
             />
           </div>
-            <br />
+          <br />
           <div>
-            <h5 style={{float: 'left', marginRight: 10}}>Image URL</h5>
+            <h5 style={{ float: 'left', marginRight: 10 }}>Image URL</h5>
             <input
               name="image"
               type="text"
               className="form-like large-font"
               placeholder="Enter Link for Campus Image"
-              style={{height: 30, width: 467}}
+              style={{ height: 30, width: 467 }}
             />
           </div>
-            <br />
+          <br />
           <div>
-            <h5 style={{float: 'left', marginRight: 10}}>Description</h5>
+            <h5 style={{ float: 'left', marginRight: 10 }}>Description</h5>
             <textarea
               name="content"
               type="textarea"
               className="form-like large-font"
               placeholder="Enter Description of Campus"
-              style={{height: 60, width: 466}}
+              style={{ height: 60, width: 466 }}
             />
           </div>
-                <Button type="submit">
-      Create Campus
-    </Button>
-          </form>
-        {this.props.campuses.map(campus => {
-          return (
-            <Media key={campus.id}>
-              <Media.Left>
-                <img width={300} height={100} src={campus.image} alt="Image" />
-              </Media.Left>
-              <Media.Body>
-                <Link to={`/campuses/${campus.id}`}>
-                  <Media.Heading> {campus.name}</Media.Heading>
-                </Link>
-                <p>{campus.content.split(' ').slice(0, 40).join(' ')}...</p>
-              </Media.Body>
-              <Media.Right>
-              <Button type="button" bsStyle="danger" onClick={ () => removeCampus(campus.id) }>
-              Delete Campus
-              </Button>
-              </Media.Right>
-            </Media>
-          )
-        })}
+          <Button type="submit">
+            Create Campus
+          </Button>
+        </form>
+        {
+          this.props.campuses
+            .map(campus =>
+              <Campus campus={campus} key={campus.name} />)
+        }
       </div>
     )
   }
@@ -101,5 +87,5 @@ class Campuses extends Component {
 
 //Container
 const mapState = ({ campuses }) => ({ campuses })
-const mapDispatch = { addCampus, removeCampus }
+const mapDispatch = { addCampus }
 export default connect(mapState, mapDispatch)(Campuses)

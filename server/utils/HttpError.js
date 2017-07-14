@@ -2,7 +2,7 @@
 
 var http = require('http');
 
-function HttpError (status, message) {
+function HttpError(status, message) {
   var err = new Error(message || http.STATUS_CODES[status]);
   err.status = status;
   Object.setPrototypeOf(err, HttpError.prototype);

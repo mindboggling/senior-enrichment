@@ -1,57 +1,35 @@
-import React, {Component} from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
-import { fetchCampus } from '../redux/campuses';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { removeCampus } from '../redux/campuses';
+import { Media, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 
 class Campus extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { campus: {} }
-  }
-
-  componentDidMount() {
-    console.log(this.props.fetchCampusData());
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      campus: newProps.campus
-    });
-  }
-
   render() {
-    const campus = this.state.campus;
+    const { campus, removeCampus } = this.props
     return (
-  <Grid>
-    <Row className="show-grid">
-     <Col md={12}>
-      <h1 className="text-center">{campus.name}</h1>
-      <br />
-      </Col>
-      <img height={200} width={500} className="img-responsive center-block" src={campus.image} />
-      <br />
-      <br />
-      <span className="text-center">{campus.content}</span>
-    </Row>
-  </Grid>
-  )
+      <Media key={campus.id}>
+        <Media.Left>
+          <img width={300} height={100} src={campus.image} alt="Image" />
+        </Media.Left>
+        <Media.Body>
+          <Link to={`/campuses/${campus.id}`}>
+            <Media.Heading> {campus.name}</Media.Heading>
+          </Link>
+          <p>{campus.content.split(' ').slice(0, 40).join(' ')}...</p>
+        </Media.Body>
+        <Media.Right>
+          <Button type="button" bsStyle="danger" onClick={() => removeCampus(campus.id)}>
+            Delete Campus
+              </Button>
+        </Media.Right>
+      </Media>
+    )
   }
 }
 
-
-const mapState = ({campuses}, ownProps) => {
- const campus = campuses.find((el) => el.id === Number(ownProps.match.params.id))
- return {campus};
-}
-
-const mapDispatch = (dispatch, ownProps) => {
-  return {
-    fetchCampusData: () => {
-      const campusId = ownProps.match.params.id
-      dispatch(fetchCampus(campusId));
-    }
-  }
-}
+const mapState = null;
+const mapDispatch = { removeCampus };
 
 export default connect(mapState, mapDispatch)(Campus)

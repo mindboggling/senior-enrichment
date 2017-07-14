@@ -13,7 +13,7 @@ const create = campus => ({ type: CREATE, campus });
 const remove = id => ({ type: REMOVE, id });
 
 //reducer
-export default function reducer (campuses = [], action) {
+export default function reducer(campuses = [], action) {
   switch (action.type) {
     case INITIALIZE:
       return action.campuses
@@ -23,7 +23,7 @@ export default function reducer (campuses = [], action) {
     case CREATE:
       return [...campuses, action.campus]
     case REMOVE:
-      return campuses.filter(campus => campus.id !== action.id )
+      return campuses.filter(campus => campus.id !== action.id)
     default:
       return campuses
   }
@@ -46,6 +46,12 @@ export const addCampus = campus => dispatch => {
   axios.post('/api/campuses', campus)
     .then(res => dispatch(create(res.data)))
     .catch(err => console.error(`Creating campus: ${campus} unsuccessful`, err))
+}
+
+export const updateCampus = (id, campus) => dispatch => {
+  axios.put(`/api/campuses/${id}`, campus)
+    .then(res => dispatch(update(res.data)))
+    .catch(err => console.error(`Updating campus: ${campus} unsuccessful`, err))
 }
 
 export const removeCampus = id => dispatch => {

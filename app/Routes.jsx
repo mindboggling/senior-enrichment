@@ -6,12 +6,15 @@ import Root from './components/Root';
 import Home from './components/Home';
 import history from './history';
 import Campuses from './components/Campuses';
-import Campus from './components/Campus'
+import CampusInfo from './components/CampusInfo';
+import Users from './components/Users';
+import UserInfo from './components/UserInfo';
 import { fetchCampuses } from './redux/campuses';
+import { fetchUsers } from './redux/users';
 
 class Routes extends Component {
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.fetchInitialData();
   }
 
@@ -22,7 +25,9 @@ class Routes extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/campuses" component={Campuses} />
-            <Route path="/campuses/:id" component={Campus} />
+            <Route path="/campuses/:id" component={CampusInfo} />
+            <Route exact path="/users" component={Users} />
+            <Route path="/users/:id" component={UserInfo} />
             <Route component={Home} />
           </Switch>
         </Root>
@@ -36,6 +41,7 @@ const mapProps = null;
 const mapDispatch = dispatch => ({
   fetchInitialData: () => {
     dispatch(fetchCampuses());
+    dispatch(fetchUsers());
   }
 })
 
